@@ -15,9 +15,26 @@ const PizzaSchema = new Schema({
         type: String,
         default: 'Large'
     },
-    toppings: []
-});
+    toppings: [],
+    comment: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
+},
+{
+    toJSON:{
+        virtuals: true
+    },
+    id: false
+}
+);
 
 const Pizza = model('Pizza', PizzaSchema);
+
+PizzaSchema.virtual('commentCount').get(function() {
+    return this.comments.length;
+})
 
 module.exports = Pizza;
